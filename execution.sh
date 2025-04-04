@@ -15,16 +15,16 @@ export PATH=${CUDA_HOME}/bin:${PATH}
 
 export PYTHON_PATH=$PATH
 
-export NUM_GPUS=$1
+export NUM_GPUS=$2
 
 echo $NUM_GPUS
 
 cd . .
 #export DATASET_DIR="datasets/"
 # Activate the relevant virtual environment:
-source activate diffuse
+source "/home/csantiago/venvs/diffuse_env/bin/activate"
 
-#python scripts/image_train.py
+python scripts/image_train.py
 
 #python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
 
@@ -32,4 +32,4 @@ source activate diffuse
 
 #python scripts/saliency_maps.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name create_saliency
 
-python scripts/image_sample_dif-fuse.py --model_path results/test/model054000.pt
+#python scripts/image_sample_dif-fuse.py --model_path results/test/model054000.pt

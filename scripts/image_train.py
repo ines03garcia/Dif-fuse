@@ -4,12 +4,12 @@ Train a diffusion model on images.
 import sys
 
 # put your path here
-sys.path.extend(['/disk/scratch2/alessandro/new_code/Dif-fuse'])
+sys.path.extend(['/home/csantiago/Dif-fuse'])
 
 import argparse
 
 from guided_diffusion import dist_util, logger
-from guided_diffusion.brain_datasets import *
+from guided_diffusion.VinDrMammo_dataset import *
 from guided_diffusion.resample import create_named_schedule_sampler
 from guided_diffusion.script_util import (
     model_and_diffusion_defaults,
@@ -29,7 +29,8 @@ def load_data(loader):
     while True:
         yield from loader
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '5,6'
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+
 
 def main():
     args = create_argparser().parse_args()
@@ -64,13 +65,12 @@ def main():
 
     logger.log("creating data loader...")
 
-    train_set = BRATSDataset(
-        dataset_root_folder_filepath='data/brats2021_slices/images',
-        df_path='data/brats2021_train.csv',
+    train_set = VinDrMammoDataset(
+        dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
+        df_path='data/grouped_df.csv',
         transform=None,
         only_positive=False,
-        only_negative=True,
-        only_flair=False)
+        only_negative=True)
 
 
     loader = DataLoader(
@@ -106,7 +106,7 @@ def create_argparser():
     defaults = dict(
         gpus=2,
         experiment_name='test',
-        schedule_sampler="uniform",
+        schedule_sampler="uniform", # Futuramente experimentar com linear e cossine
         lr=1e-4,
         weight_decay=0.05,
         lr_anneal_steps=0,
