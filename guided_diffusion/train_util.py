@@ -15,7 +15,7 @@ from .fp16_util import MixedPrecisionTrainer
 from .nn import update_ema
 from .resample import LossAwareSampler, UniformSampler
 from guided_diffusion.script_util import (
-    NUM_CLASSES,
+    NUM_CLASSES, # None
 
 )
 from torchvision import utils
@@ -170,7 +170,7 @@ class TrainLoop:
             or self.step + self.resume_step < self.lr_anneal_steps
         ):
 
-            batch, cond, _,_= next(self.data)
+            batch, cond = next(self.data)
             count = None
 
             if self.class_cond==False:

@@ -12,7 +12,7 @@ class VinDrMammoDataset(torch.utils.data.Dataset):
             df_path,
             transform = None,
             only_positive = False,
-            only_negative = False
+            only_negative = True
 
     ):
         super(VinDrMammoDataset, self).__init__()
@@ -43,23 +43,21 @@ class VinDrMammoDataset(torch.utils.data.Dataset):
 
         return len(self.sample_idx_to_scan_path_and_label)
 
+    # Erro deve estar aqui
     def __getitem__(self, item):
-        # x_path (image_id) and y_sample (breast_birads)
         image_file, patient_id, y_sample = self.sample_idx_to_scan_path_and_label[item]
 
-        raw_image = []
         im = os.path.join(self.dataset_root_folder_filepath, patient_id, image_file)
         image = imageio.imread(im)
         image = torch.tensor(image, dtype=torch.float32)
         
         if self.transform is not None:
             image = self.transform(image)
-        
-        image = image / torch.max(image)
-        raw_image.append(image)
-        
-        # Stack to maintain consistent shape (adds a channel dimension)
-        im = torch.stack(raw_image)  # [1, H, W]
 
-        # return image
-        return im
+        image = image / torch.max(image)
+        image = image.unsqueeze(0)  # [1, H, W]
+        # torch.Size([1, 1520, 912])
+
+
+        # ATENCAO - estou a dar return do tensor
+        return image, y_sample

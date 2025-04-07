@@ -72,11 +72,9 @@ def main():
         only_positive=False,
         only_negative=True)
 
-
     loader = DataLoader(
         train_set, batch_size=args.batch_size, shuffle=True, num_workers=0, drop_last=True
     )
-
 
     data = load_data(loader)
 
