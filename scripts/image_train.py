@@ -29,7 +29,8 @@ def load_data(loader):
     while True:
         yield from loader
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+# Se quiser restringir os GPUs vistos pelo sistema
+#os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 
 def main():
@@ -48,15 +49,13 @@ def main():
         **args_to_dict(args, model_and_diffusion_defaults().keys())
     )
 
-    device = (
-        torch.cuda.current_device()
-        if torch.cuda.is_available()
-        else "cpu"
-    )
-    print(device)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("Using device:", device)
+    exit(0)
+
 
     # model.to(dist_util.dev())
-    model.to(device)
+    model = model.to(device)
     if args.gpus > 1:
         model = nn.DataParallel(model)
 
@@ -77,6 +76,7 @@ def main():
     )
 
     data = load_data(loader)
+    
 
     logger.log("training...")
     TrainLoop(
