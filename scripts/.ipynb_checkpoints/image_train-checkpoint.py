@@ -51,7 +51,6 @@ def main():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
-    exit(0)
 
 
     # model.to(dist_util.dev())
