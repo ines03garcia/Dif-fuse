@@ -60,7 +60,7 @@ channels = 1
 args.num_workers = 4
 
 train_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
+    dataset_root_folder_filepath='datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
     df_path='data/brats2021_train.csv',
     transform=None,
     only_positive=False,

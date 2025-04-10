@@ -60,7 +60,7 @@ channels = 1
 args.num_workers = 4
 
 train_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
     df_path='data/brats2021_train.csv',
     transform=None,
     only_positive=False,
@@ -68,7 +68,7 @@ train_dataset = BRATSDataset(
     only_flair=False)
 
 val_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
     df_path='data/brats2021_val.csv',
     transform=None,
     only_positive=False,
@@ -76,7 +76,7 @@ val_dataset = BRATSDataset(
     only_flair=False)
 
 test_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
     df_path='data/brats2021_test.csv',
     transform=None,
     only_positive=False,
