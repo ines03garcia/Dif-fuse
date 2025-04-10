@@ -14,7 +14,7 @@ import glob
 import tarfile
 import torch.backends.cudnn as cudnn
 from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
-from guided_diffusion.brain_datasets import *
+from guided_diffusion.VinDrMammo_dataset import *
 from utils.metric_tracking import (
     MetricTracker,
     compute_accuracy,
@@ -59,29 +59,26 @@ width = 256
 channels = 1
 args.num_workers = 4
 
-train_dataset = BRATSDataset(
-    dataset_root_folder_filepath='datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
-    df_path='data/brats2021_train.csv',
+train_dataset = VinDrMammoDataset(
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
+    df_path='data/grouped_df_train.csv',
     transform=None,
     only_positive=False,
-    only_negative=True,
-    only_flair=False)
+    only_negative=True)
 
-val_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
-    df_path='data/brats2021_val.csv',
+val_dataset = VinDrMammoDataset(
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
+    df_path='data/grouped_df_val.csv',
     transform=None,
     only_positive=False,
-    only_negative=True,
-    only_flair=False)
+    only_negative=True)
 
-test_dataset = BRATSDataset(
-    dataset_root_folder_filepath='data/brats2021_slices/images',
-    df_path='data/brats2021_test.csv',
+test_dataset = VinDrMammoDataset(
+    dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
+    df_path='data/grouped_df_test.csv',
     transform=None,
     only_positive=False,
-    only_negative=True,
-    only_flair=False)
+    only_negative=True)
 
 
 train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
@@ -232,7 +229,7 @@ def run_epoch(epoch, model, training, data_loader, metric_tracker):
     eval_loss = 0
     with tqdm.tqdm(initial=0, total=len(data_loader), smoothing=0) as pbar:
         # Clear this for every epoch. Only save the best epoch results.
-        for x, _, _,ids in data_loader:
+        for x, ids in data_loader:
 
             if training:
                 log_string, train_loss = train_iter(
