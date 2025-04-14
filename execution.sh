@@ -1,4 +1,6 @@
 #!/bin/sh
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128 # To avoid fragmentation
+
 export CUDA_HOME=/opt/cuda-10.1.168_418_67/
 
 export CUDNN_HOME=/opt/cuDNN-cuDNN-7.6.0.64_9.2/
@@ -24,9 +26,9 @@ cd . .
 # Activate the relevant virtual environment:
 source "/home/csantiago/venvs/diffuse_env/bin/activate"
 
-#python scripts/image_train.py
+python scripts/image_train.py
 
-python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
+#python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
 
 #python scripts/train_baseline_classifier.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name baseline_classifier
 

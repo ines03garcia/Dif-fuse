@@ -2,9 +2,11 @@
 Train a diffusion model on images.
 """
 import sys
-
 # put your path here
 sys.path.extend(['/home/csantiago/Dif-fuse'])
+
+from utils.gpu_selection_utils import set_gpu_visible_devices
+set_gpu_visible_devices(2)
 
 import argparse
 
@@ -29,9 +31,6 @@ def load_data(loader):
     while True:
         yield from loader
 
-# Se quiser restringir os GPUs vistos pelo sistema
-#os.environ["CUDA_VISIBLE_DEVICES"] = '0'
-
 
 def main():
     args = create_argparser().parse_args()
@@ -52,7 +51,6 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Using device:", device)
 
-
     # model.to(dist_util.dev())
     model = model.to(device)
     if args.gpus > 1:
@@ -65,7 +63,7 @@ def main():
 
     train_set = VinDrMammoDataset(
         dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
-        df_path='data/grouped_df.csv',
+        df_path='data/grouped_df_train-reduced.csv',
         transform=None,
         only_positive=False,
         only_negative=True)

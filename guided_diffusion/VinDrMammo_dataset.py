@@ -43,7 +43,6 @@ class VinDrMammoDataset(torch.utils.data.Dataset):
 
         return len(self.sample_idx_to_scan_path_and_label)
 
-    # Erro deve estar aqui
     def __getitem__(self, item):
         image_file, patient_id, y_sample = self.sample_idx_to_scan_path_and_label[item]
 
