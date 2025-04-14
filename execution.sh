@@ -26,7 +26,7 @@ cd . .
 # Activate the relevant virtual environment:
 source "/home/csantiago/venvs/diffuse_env/bin/activate"
 
-python scripts/image_train.py
+python scripts/image_train.py --use_fp16 True
 
 #python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
 

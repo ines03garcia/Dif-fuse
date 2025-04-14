@@ -150,7 +150,7 @@ class MixedPrecisionTrainer:
         self,
         *,
         model,
-        use_fp16=False,
+        use_fp16=True,
         fp16_scale_growth=1e-3,
         initial_lg_loss_scale=INITIAL_LOG_LOSS_SCALE,
     ):
@@ -168,7 +168,10 @@ class MixedPrecisionTrainer:
                 self.model.named_parameters()
             )
             self.master_params = make_master_params(self.param_groups_and_shapes)
-            self.model.convert_to_fp16()
+            if isinstance(self.model, nn.DataParallel):
+                self.model.module.convert_to_fp16() # My update
+            else:
+                self.model.convert_to_fp16()
 
     def zero_grad(self):
         zero_grad(self.model_params)
