@@ -233,6 +233,7 @@ class TrainLoop:
 
     def run_step(self, batch, cond, count = None):
         self.forward_backward(batch, cond, count)
+        # Gradient Accumulation
         took_step = self.mp_trainer.optimize(self.opt)
         if took_step:
             self._update_ema()
