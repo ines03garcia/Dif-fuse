@@ -1,0 +1,8 @@
+# Ignore Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Ignore model checkpoints
+*.ckpt
+*.pth
+*.pt
+checkpoints/
