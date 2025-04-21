@@ -349,7 +349,7 @@ class QKVAttentionLegacy(nn.Module):
         scale = 1 / math.sqrt(math.sqrt(ch))
         print((q*scale).shape)
         print((k*scale).shape)
-        exit(1)
+        #exit(1)
         weight = th.einsum(
             "bct,bcs->bts", q * scale, k * scale
         )  # More stable with f16 than dividing afterwards

@@ -1,0 +1,18 @@
+Logging to results/test
+creating model and diffusion...
+creating data loader...
+training...
+-------------------------
+| grad_norm  | 5.54     |
+| loss       | 0.999    |
+| loss_q1    | 0.999    |
+| loss_q3    | 0.998    |
+| mse        | 0.999    |
+| mse_q1     | 0.999    |
+| mse_q3     | 0.998    |
+| param_norm | 56.3     |
+| samples    | 2        |
+| step       | 0        |
+-------------------------
+saving model 0...
+saving model 0.9999...

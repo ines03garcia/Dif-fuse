@@ -25,8 +25,14 @@ cd . .
 #export DATASET_DIR="datasets/"
 # Activate the relevant virtual environment:
 source "/home/csantiago/venvs/diffuse_env/bin/activate"
+#python scripts/image_train.py
 
-python scripts/image_train.py --diffusion_steps 100 --num_channels 32 --batch_size 4 --image_size 128 --attention_resolutions 8 --num_res_blocks 0 --channel_mult '1,2,2' --use_checkpoint 'True' --save_interval 10 --use_fp16 'True'
+# Batch size < 8, num_channels < 128 ( Batch size 2 channels 64 dá, batch size 4 channels 32 dá) 
+# --diffusion_steps 100 deve ter mais a ver com o tempo de execução
+# Falta ver com o "channel_mult"
+python scripts/image_train.py --batch_size 2 --num_res_blocks 1 --num_channels 32 --channel_mult '1,2,2' --use_checkpoint 'True' --save_interval 1000
+
+
 
 #python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
 
