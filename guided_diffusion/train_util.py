@@ -169,7 +169,7 @@ class TrainLoop:
             not self.lr_anneal_steps
             or self.step + self.resume_step < self.lr_anneal_steps
         ):
-
+            
             batch, cond = next(self.data)
             count = None
 

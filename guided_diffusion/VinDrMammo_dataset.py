@@ -44,9 +44,9 @@ class VinDrMammoDataset(torch.utils.data.Dataset):
         return len(self.sample_idx_to_scan_path_and_label)
 
     def __getitem__(self, item):
-        image_file, patient_id, y_sample = self.sample_idx_to_scan_path_and_label[item]
+        image_file, _, y_sample = self.sample_idx_to_scan_path_and_label[item]
 
-        im = os.path.join(self.dataset_root_folder_filepath, patient_id, image_file)
+        im = os.path.join(self.dataset_root_folder_filepath, image_file)
         image = imageio.imread(im)
         image = torch.tensor(image, dtype=torch.float32)
         

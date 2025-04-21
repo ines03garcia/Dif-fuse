@@ -48,32 +48,28 @@ def main():
         **args_to_dict(args, model_and_diffusion_defaults().keys())
     )
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = dist_util.dev()
     print("Using device:", device)
-
-    # model.to(dist_util.dev())
     model = model.to(device)
     if args.gpus > 1:
         model = nn.DataParallel(model)
-
 
     schedule_sampler = create_named_schedule_sampler(args.schedule_sampler, diffusion)
 
     logger.log("creating data loader...")
 
     train_set = VinDrMammoDataset(
-        dataset_root_folder_filepath='/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png',
+        dataset_root_folder_filepath='/home/csantiago/data',
         df_path='data/grouped_df_train-reduced.csv',
         transform=None,
         only_positive=False,
         only_negative=True)
 
     loader = DataLoader(
-        train_set, batch_size=args.batch_size, shuffle=True, num_workers=0, drop_last=True
+         train_set, batch_size=args.batch_size, shuffle=True, num_workers=0, drop_last=True
     )
 
     data = load_data(loader)
-    
 
     logger.log("training...")
     TrainLoop(
@@ -106,9 +102,9 @@ def create_argparser():
         weight_decay=0.05,
         lr_anneal_steps=0,
         batch_size=16,
-        microbatch=-1,  # -1 disables microbatches
+        microbatch=4,  # -1 disables microbatches
         ema_rate="0.9999",  # comma-separated list of EMA values
-        log_interval=10,
+        log_interval=100,
         save_interval=1000,
         resume_checkpoint="",
         use_fp16=False,
