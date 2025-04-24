@@ -55,7 +55,6 @@ class VinDrMammoDataset(torch.utils.data.Dataset):
 
         image = image / torch.max(image)
         image = image.unsqueeze(0)  # [1, H, W]
-        # torch.Size([1, 1520, 912])
 
 
         # ATENCAO - estou a dar return do tensor

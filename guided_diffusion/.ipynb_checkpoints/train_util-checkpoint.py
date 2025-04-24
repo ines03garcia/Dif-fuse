@@ -85,6 +85,7 @@ class TrainLoop:
             self.mp_trainer.master_params, lr=self.lr, weight_decay=self.weight_decay
         )
         if self.resume_step:
+            print("Resuming step...")
             self._load_optimizer_state()
             # Model was resumed, either due to a restart or a checkpoint
             # being specified at the command line.
@@ -98,6 +99,7 @@ class TrainLoop:
             ]
 
         if th.cuda.is_available():
+            print("CUDA is available - using DDP")
             self.use_ddp = True
             self.ddp_model = DDP(
                 self.model,
@@ -166,18 +168,19 @@ class TrainLoop:
 
     def run_loop(self):
         while (
-            not self.lr_anneal_steps
-            or self.step + self.resume_step < self.lr_anneal_steps
+            (not self.lr_anneal_steps
+            or self.step + self.resume_step < self.lr_anneal_steps) and (self.step + self.resume_step < 1000)
         ):
-            
+            print(f"\n-------------------\nSTEP {self.step + self.resume_step}\n-------------------\n")
             batch, cond = next(self.data)
             count = None
 
             if self.class_cond==False:
                 cond = None
 
-
+            print("Run step")
             self.run_step(batch, cond, count)
+            print("Step Run!")
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
             if self.step % self.save_interval == 0:
@@ -213,9 +216,9 @@ class TrainLoop:
                     all_labels.extend([labels.cpu().numpy() for labels in gathered_labels])
 
                 arr_img = torch.cat(all_images_img, axis=0)
-
+                print("Saving output image...")
                 out_path_img = os.path.join(logger.get_dir(), f"images/samples_{self.step + self.resume_step}.png")
-                # print(sample_img.shape, arr_img.shape)
+                print(sample_img.shape, arr_img.shape)
                 if self.class_cond:
                     label_arr = np.concatenate(all_labels, axis=0)
                     utils.save_image((arr_img[:,0,:,:]).unsqueeze(1), out_path_img, nrow=4)
@@ -233,7 +236,7 @@ class TrainLoop:
 
     def run_step(self, batch, cond, count = None):
         self.forward_backward(batch, cond, count)
-        # Gradient Accumulation
+        # Add Gradient Accumulation
         took_step = self.mp_trainer.optimize(self.opt)
         if took_step:
             self._update_ema()

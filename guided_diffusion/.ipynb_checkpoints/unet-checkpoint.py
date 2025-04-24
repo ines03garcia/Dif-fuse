@@ -299,9 +299,9 @@ class AttentionBlock(nn.Module):
     def _forward(self, x):
         b, c, *spatial = x.shape
         x = x.reshape(b, c, -1)
-        #qkv = self.qkv(self.norm(x))
-        #h = self.attention(qkv)
-        h = self.norm(x)
+        qkv = self.qkv(self.norm(x))
+        h = self.attention(qkv)
+        #h = self.norm(x) Escaping attention
         h = self.proj_out(h)
         return (x + h).reshape(b, c, *spatial)
 
@@ -347,9 +347,8 @@ class QKVAttentionLegacy(nn.Module):
         ch = width // (3 * self.n_heads)
         q, k, v = qkv.reshape(bs * self.n_heads, ch * 3, length).split(ch, dim=1)
         scale = 1 / math.sqrt(math.sqrt(ch))
-        print((q*scale).shape)
-        print((k*scale).shape)
-        #exit(1)
+        #print((q*scale).shape)
+        #print((k*scale).shape)
         weight = th.einsum(
             "bct,bcs->bts", q * scale, k * scale
         )  # More stable with f16 than dividing afterwards
@@ -654,12 +653,15 @@ class UNetModel(nn.Module):
         if self.num_classes is not None:
             assert y.shape == (x.shape[0],)
             emb = emb + self.label_emb(y)
-
+        
         h = x.type(self.dtype)
+        print("Contracting path U-net")
         for module in self.input_blocks:
             h = module(h, emb)
             hs.append(h)
+        print("BottleNeck U-net")
         h = self.middle_block(h, emb)
+        print("Expanding path U-net")
         for module in self.output_blocks:
             h = th.cat([h, hs.pop()], dim=1)
             h = module(h, emb)

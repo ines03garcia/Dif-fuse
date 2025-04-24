@@ -523,10 +523,11 @@ class GaussianDiffusion:
         if progress:
             # Lazy import so that we don't depend on tqdm.
             from tqdm.auto import tqdm
-
+            print(f"Sampling x_t for the {self.num_timesteps} diffusion steps...")
             indices = tqdm(indices)
 
         for i in indices:
+            print(f"Sampling x_{i}")
             t = th.tensor([i] * shape[0], device=device)
             with th.no_grad():
                 out = self.p_sample(
@@ -694,7 +695,7 @@ class GaussianDiffusion:
         if progress:
             # Lazy import so that we don't depend on tqdm.
             from tqdm.auto import tqdm
-
+            
             indices = tqdm(indices)
 
         for i in indices:
@@ -803,7 +804,6 @@ class GaussianDiffusion:
         # img = self.q_sample(x_start=img, t=t, noise=noise).to(device)
 
 
-
         indices = tqdm(indices)
         for i in indices:
 
@@ -892,6 +892,7 @@ class GaussianDiffusion:
         if progress:
             # Lazy import so that we don't depend on tqdm.
             from tqdm.auto import tqdm
+
             indices = tqdm(indices)
 
         for i in indices:
@@ -909,7 +910,6 @@ class GaussianDiffusion:
                 )
 
                 img = out["sample"]
-
 
         indices = tqdm(indices)
         rec = img.clone()
