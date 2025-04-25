@@ -169,21 +169,21 @@ class TrainLoop:
     def run_loop(self):
         while (
             (not self.lr_anneal_steps
-            or self.step + self.resume_step < self.lr_anneal_steps) and (self.step + self.resume_step < 1000)
+            or self.step + self.resume_step < self.lr_anneal_steps) and (self.step + self.resume_step < 100000)
         ):
-            print(f"\n-------------------\nSTEP {self.step + self.resume_step}\n-------------------\n")
-            batch, cond = next(self.data)
+            batch, cond = next(self.data) # Gets a batch from the Data Loader
             count = None
 
             if self.class_cond==False:
                 cond = None
 
-            print("Run step")
-            self.run_step(batch, cond, count)
-            print("Step Run!")
+            print(f"\n-------------------\nRUNNING STEP {self.step + self.resume_step}\n-------------------\n")
+            self.run_step(batch, cond, count) # Run 1 training step
+            print(f"\n-------------------\nFINISHED\n-------------------\n")
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
             if self.step % self.save_interval == 0:
+                print(f"\n-------------------\nSAMPLING batch_size IMAGES WITH MODEL AT THIS POINT\n-------------------\n")
                 self.save()
 
                 all_images = []
@@ -199,13 +199,14 @@ class TrainLoop:
                 sample_fn = (
                     self.diffusion.p_sample_loop
                 )
+                # Sampling microbatch_size (4) images
                 sample = sample_fn(
                     self.ddp_model,
                     (self.batch_size, batch.shape[1], self.image_size, self.image_size),
                     clip_denoised=self.clip_denoised,
                     model_kwargs=model_kwargs,
                 )
-                sample_img = sample.to(torch.float)
+                sample_img = sample.to(torch.float) # Convert to float type sensor
 
                 all_images_img.extend([sample_img])
                 if self.class_cond:
@@ -216,7 +217,7 @@ class TrainLoop:
                     all_labels.extend([labels.cpu().numpy() for labels in gathered_labels])
 
                 arr_img = torch.cat(all_images_img, axis=0)
-                print("Saving output image...")
+                print("Saving output image...") # From self.save_interval to self.save_interval steps, samples images via p_sample_loop and saves it
                 out_path_img = os.path.join(logger.get_dir(), f"images/samples_{self.step + self.resume_step}.png")
                 print(sample_img.shape, arr_img.shape)
                 if self.class_cond:
@@ -236,18 +237,18 @@ class TrainLoop:
 
     def run_step(self, batch, cond, count = None):
         self.forward_backward(batch, cond, count)
-        # Add Gradient Accumulation
-        took_step = self.mp_trainer.optimize(self.opt)
+        took_step = self.mp_trainer.optimize(self.opt) # Usa o AdamW para dar update aos pesos
         if took_step:
             self._update_ema()
         self._anneal_lr()
         self.log_step()
-
+        
     def forward_backward(self, batch, cond, count = None):
-        self.mp_trainer.zero_grad()
-        for i in range(0, batch.shape[0], self.microbatch):
-            micro = batch[i : i + self.microbatch].to(dist_util.dev())
-            if count is not None:
+        # Run forward and reverse process of ddpm
+        self.mp_trainer.zero_grad() # Clean accumulated gradients
+        for i in range(0, batch.shape[0], self.microbatch): # from 0 to batch_size (16), batchsize/4 (4) at a time
+            micro = batch[i : i + self.microbatch].to(dist_util.dev()) # Move microbatch to GPU
+            if count is not None: # Extra variable 'count'
                 micro_count = count[i : i + self.microbatch].to(dist_util.dev())
             else:
                 micro_count = None
@@ -258,10 +259,10 @@ class TrainLoop:
                 }
             else:
                 micro_cond = None
-            last_batch = (i + self.microbatch) >= batch.shape[0]
-            t, weights = self.schedule_sampler.sample(micro.shape[0], dist_util.dev())
+            last_batch = (i + self.microbatch) >= batch.shape[0] # 1 if last microbatch, 0 otherwise
+            t, weights = self.schedule_sampler.sample(micro.shape[0], dist_util.dev()) # Initialize t and weights
 
-            compute_losses = functools.partial(
+            compute_losses = functools.partial( # Create compute_losses function
                 self.diffusion.training_losses,
                 self.ddp_model,
                 micro,
@@ -274,18 +275,18 @@ class TrainLoop:
                 losses = compute_losses()
             else:
                 with self.ddp_model.no_sync():
-                    losses = compute_losses()
+                    losses = compute_losses() # Forward pass for each microbatch
 
             if isinstance(self.schedule_sampler, LossAwareSampler):
                 self.schedule_sampler.update_with_local_losses(
                     t, losses["loss"].detach()
                 )
 
-            loss = (losses["loss"] * weights).mean()
+            loss = (losses["loss"] * weights).mean() # Averages microbatch losses 
             log_loss_dict(
                 self.diffusion, t, {k: v * weights for k, v in losses.items()}
             )
-            self.mp_trainer.backward(loss)
+            self.mp_trainer.backward(loss) # Calculates gradients
 
     def _update_ema(self):
         for rate, params in zip(self.ema_rate, self.ema_params):

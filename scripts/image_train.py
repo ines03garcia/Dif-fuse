@@ -60,7 +60,7 @@ def main():
 
     train_set = VinDrMammoDataset(
         dataset_root_folder_filepath='/home/csantiago/data',
-        df_path='data/grouped_df_train-reduced.csv',
+        df_path='data/grouped_df_train.csv',
         transform=None,
         only_positive=False,
         only_negative=True)
@@ -104,7 +104,7 @@ def create_argparser():
         batch_size=16,
         microbatch=4,  # -1 disables microbatches
         ema_rate="0.9999",  # comma-separated list of EMA values
-        log_interval=100,
+        log_interval=1000,
         save_interval=1000,
         resume_checkpoint="",
         use_fp16=False,
