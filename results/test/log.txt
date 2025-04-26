@@ -1,0 +1,94 @@
+Logging to results/test
+creating model and diffusion...
+creating data loader...
+training...
+-------------------------
+| grad_norm  | 21.2     |
+| loss       | 1        |
+| loss_q0    | 0.999    |
+| loss_q1    | 1        |
+| loss_q2    | 0.999    |
+| loss_q3    | 1        |
+| mse        | 1        |
+| mse_q0     | 0.999    |
+| mse_q1     | 1        |
+| mse_q2     | 0.999    |
+| mse_q3     | 1        |
+| param_norm | 82.9     |
+| samples    | 16       |
+| step       | 0        |
+-------------------------
+saving model 0...
+saving model 0.9999...
+-------------------------
+| grad_norm  | 3.66     |
+| loss       | 0.142    |
+| loss_q0    | 0.219    |
+| loss_q1    | 0.125    |
+| loss_q2    | 0.109    |
+| loss_q3    | 0.113    |
+| mse        | 0.142    |
+| mse_q0     | 0.219    |
+| mse_q1     | 0.125    |
+| mse_q2     | 0.109    |
+| mse_q3     | 0.113    |
+| param_norm | 82.7     |
+| samples    | 1.6e+04  |
+| step       | 1e+03    |
+-------------------------
+saving model 0...
+saving model 0.9999...
+-------------------------
+| grad_norm  | 0.495    |
+| loss       | 0.0398   |
+| loss_q0    | 0.107    |
+| loss_q1    | 0.0264   |
+| loss_q2    | 0.0158   |
+| loss_q3    | 0.0147   |
+| mse        | 0.0398   |
+| mse_q0     | 0.107    |
+| mse_q1     | 0.0264   |
+| mse_q2     | 0.0158   |
+| mse_q3     | 0.0147   |
+| param_norm | 82.3     |
+| samples    | 3.2e+04  |
+| step       | 2e+03    |
+-------------------------
+saving model 0...
+saving model 0.9999...
+-------------------------
+| grad_norm  | 0.404    |
+| loss       | 0.0348   |
+| loss_q0    | 0.094    |
+| loss_q1    | 0.0243   |
+| loss_q2    | 0.0114   |
+| loss_q3    | 0.0101   |
+| mse        | 0.0348   |
+| mse_q0     | 0.094    |
+| mse_q1     | 0.0243   |
+| mse_q2     | 0.0114   |
+| mse_q3     | 0.0101   |
+| param_norm | 81.9     |
+| samples    | 4.8e+04  |
+| step       | 3e+03    |
+-------------------------
+saving model 0...
+saving model 0.9999...
+-------------------------
+| grad_norm  | 0.351    |
+| loss       | 0.0318   |
+| loss_q0    | 0.0886   |
+| loss_q1    | 0.0233   |
+| loss_q2    | 0.00908  |
+| loss_q3    | 0.00745  |
+| mse        | 0.0318   |
+| mse_q0     | 0.0886   |
+| mse_q1     | 0.0233   |
+| mse_q2     | 0.00908  |
+| mse_q3     | 0.00745  |
+| param_norm | 81.5     |
+| samples    | 6.4e+04  |
+| step       | 4e+03    |
+-------------------------
+saving model 0...
+saving model 0.9999...
