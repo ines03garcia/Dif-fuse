@@ -42,7 +42,7 @@ class TrainLoop:
         fp16_scale_growth=1e-3,
         schedule_sampler=None,
         weight_decay=0.0,
-        lr_anneal_steps=0,
+        lr_anneal_steps=500000,
         clip_denoised=True
     ):
         self.model = model
@@ -169,7 +169,7 @@ class TrainLoop:
     def run_loop(self):
         while (
             (not self.lr_anneal_steps
-            or self.step + self.resume_step < self.lr_anneal_steps) and (self.step + self.resume_step < 100000)
+            or self.step + self.resume_step < self.lr_anneal_steps)
         ):
             batch, cond = next(self.data) # Gets a batch from the Data Loader
             count = None
