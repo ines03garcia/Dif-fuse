@@ -45,17 +45,17 @@ def model_and_diffusion_defaults():
     Defaults for image training.
     """
     res = dict(
-        image_size=256,
-        num_channels=32, # 128
-        num_res_blocks=1, #2
+        image_size=512,
+        num_channels=128,
+        num_res_blocks=2,
         num_heads=1,
         num_heads_upsample=-1,
         num_head_channels=-1,
-        attention_resolutions="16,8", # "32,16,8"
-        channel_mult="1, 2, 4, 4", # ""
-        dropout=0.5, # 0
+        attention_resolutions="32,16,8",
+        channel_mult="",
+        dropout=0,
         class_cond=False,
-        use_checkpoint=True, # False
+        use_checkpoint=False,
         use_scale_shift_norm=True,
         resblock_updown=True,
         use_fp16=False,

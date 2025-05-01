@@ -7,13 +7,12 @@ from tqdm import tqdm
 from skimage import img_as_ubyte
 from PIL import Image
 
-#input_folder = '/home/csantiago/small_dataset'
-input_folder = '/home/csantiago/datasets/Vindir-mammoclip/VinDir_preprocessed_mammoclip/images_png'
-#output_folder = '/home/csantiago/small_dataset_256'
-output_folder = '/home/csantiago/data'
+
+input_folder = '/home/csantiago/data'
+output_folder = '/home/csantiago/data_resized'
 os.makedirs(output_folder, exist_ok=True)
 
-target_size = 256
+target_size = 512
 
 for folder in tqdm(os.listdir(input_folder)):
     folder_path = os.path.join(input_folder, folder)
