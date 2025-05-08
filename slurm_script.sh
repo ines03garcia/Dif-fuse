@@ -13,4 +13,4 @@ source /projects/F202500002HPCVLABISTUL/inescgarcia/Dif-fuse/diffuse_env/bin/act
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 
 # Train DDPM with healthy images
-srun --ntasks=4 python scripts/image_train.py --resume_checkpoint "/projects/F202500002HPCVLABISTUL/inescgarcia/Dif-fuse/results/test/model000110.pt"
+srun --ntasks=4 python scripts/image_train.py

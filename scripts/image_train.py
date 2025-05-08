@@ -96,16 +96,16 @@ def main():
 def create_argparser():
     defaults = dict(
         gpus=4,
-        experiment_name='test',
+        experiment_name='experiment2',
         schedule_sampler="uniform", # Futuramente experimentar com linear e cossine
         lr=1e-4,
         weight_decay=0.05,
         lr_anneal_steps=500000, # To avoid it training forever
         batch_size=16,
-        microbatch=-1,  # -1 disables microbatches
+        microbatch=4,  # -1 disables microbatches
         ema_rate="0.9999",  # comma-separated list of EMA values
-        log_interval=10,
-        save_interval=10,
+        log_interval=1000,
+        save_interval=1000,
         resume_checkpoint="",
         use_fp16=False,
         fp16_scale_growth=1e-3,
