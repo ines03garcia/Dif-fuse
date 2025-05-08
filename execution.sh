@@ -20,17 +20,8 @@ export NUM_GPUS=$2
 echo $NUM_GPUS
 
 cd . .
-#export DATASET_DIR="datasets/"
+
 # Activate the relevant virtual environment:
 source "/home/csantiago/venvs/diffuse_env/bin/activate"
 
 python scripts/image_train.py
-#python scripts/image_train.py --batch_size 2 --num_res_blocks 1 --num_channels 32 --channel_mult '1,2,2' --use_checkpoint 'True' --save_interval 1000
-
-#python scripts/train_autoencoder.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name autoencoder
-
-#python scripts/train_baseline_classifier.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name baseline_classifier
-
-#python scripts/saliency_maps.py -filepath_to_arguments_json_config scripts/baseline.json --experiment_name create_saliency
-
-#python scripts/image_sample_dif-fuse.py --model_path results/test/model001000.pt

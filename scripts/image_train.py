@@ -3,7 +3,7 @@ Train a diffusion model on images.
 """
 import sys
 # put your path here
-sys.path.extend(['/home/inescgarcia/Dif-fuse'])
+sys.path.extend(['/projects/F202500002HPCVLABISTUL/inescgarcia/Dif-fuse'])
 
 from utils.gpu_selection_utils import set_gpu_visible_devices
 set_gpu_visible_devices(2)
@@ -59,7 +59,7 @@ def main():
     logger.log("creating data loader...")
 
     train_set = VinDrMammoDataset(
-        dataset_root_folder_filepath='/home/inescgarcia/data_resized',
+        dataset_root_folder_filepath='/projects/F202500002HPCVLABISTUL/inescgarcia/data',
         df_path='data/grouped_df_train.csv',
         transform=None,
         only_positive=False,
@@ -95,7 +95,7 @@ def main():
 
 def create_argparser():
     defaults = dict(
-        gpus=2,
+        gpus=4,
         experiment_name='test',
         schedule_sampler="uniform", # Futuramente experimentar com linear e cossine
         lr=1e-4,
@@ -104,8 +104,8 @@ def create_argparser():
         batch_size=16,
         microbatch=-1,  # -1 disables microbatches
         ema_rate="0.9999",  # comma-separated list of EMA values
-        log_interval=10000,
-        save_interval=10000,
+        log_interval=10,
+        save_interval=10,
         resume_checkpoint="",
         use_fp16=False,
         fp16_scale_growth=1e-3,

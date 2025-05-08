@@ -1,6 +1,15 @@
 # Ignore Jupyter checkpoints
 .ipynb_checkpoints/
 
+diffuse_env/
+err.txt
+run.out
+guided_diffusion/__pycache__/
+utils/__pycache__/
+
+results/test/images/
+
+
 # Ignore model checkpoints
 *.ckpt
 *.pth
