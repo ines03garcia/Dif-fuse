@@ -9,4 +9,7 @@ results/
 *.pth
 *.pt
 checkpoints/
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
 
