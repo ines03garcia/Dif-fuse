@@ -183,7 +183,7 @@ class TrainLoop:
             if self.step % self.log_interval == 0:
                 logger.dumpkvs()
             if self.step % self.save_interval == 0:
-                print(f"\n-------------------\nSAMPLING batch_size IMAGES WITH MODEL AT THIS POINT\n-------------------\n")
+                print(f"\n-------------------\nSAMPLING {self.batch_size} IMAGES WITH MODEL AT THIS POINT\n-------------------\n")
                 self.save()
 
                 all_images = []

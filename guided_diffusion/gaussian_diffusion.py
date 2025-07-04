@@ -185,6 +185,7 @@ class GaussianDiffusion:
         )
         return mean, variance, log_variance
 
+    # Forwarding diffusion process - Noising
     def q_sample(self, x_start, t, noise=None):
         """
         Diffuse the data for a given number of diffusion steps.
@@ -197,13 +198,14 @@ class GaussianDiffusion:
         :return: A noisy version of x_start.
         """
         if noise is None:
+            # Add random Gaussian Noise
             noise = th.randn_like(x_start)
         assert noise.shape == x_start.shape
         return (
             _extract_into_tensor(self.sqrt_alphas_cumprod, t, x_start.shape) * x_start
             + _extract_into_tensor(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape)
             * noise
-        )
+        ) # One step ? Where is the loop
 
     def q_posterior_mean_variance(self, x_start, x_t, t):
         """
@@ -514,6 +516,7 @@ class GaussianDiffusion:
         if device is None:
             device = next(model.parameters()).device
         assert isinstance(shape, (tuple, list))
+        
         if noise is not None:
             img = noise
         else:
@@ -731,7 +734,7 @@ class GaussianDiffusion:
         if device is None:
             device = next(model.parameters()).device
         assert isinstance(shape, (tuple, list))
-
+        
         final = None
         for sample in self.ddim_sample_loop_forward_backward_progressive(
                 model,
@@ -778,7 +781,7 @@ class GaussianDiffusion:
             indices = tqdm(indices)
 
 
-        # if ddim forward:
+        # ddim forward:
 
         for i in indices:
 

@@ -1,3 +1,6 @@
+
+results/
+
 # Ignore Jupyter checkpoints
 .ipynb_checkpoints/
 
@@ -6,3 +9,4 @@
 *.pth
 *.pt
 checkpoints/
+
